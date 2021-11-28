@@ -4,7 +4,10 @@ from tkinter import filedialog
 
 window = tk.Tk()
 window.title('AI Facial Recognition')
-window.geometry('350x450+700+200')
+window.geometry('450x450+700+200')
+bg = tk.PhotoImage(file="assets/recogbg.png")
+label1 = tk.Label(window, image=bg)
+label1.place(x=0, y=0)
 
 methods = [cv2.TM_CCOEFF, cv2.TM_CCOEFF_NORMED, cv2.TM_CCORR, cv2.TM_CCORR_NORMED, cv2.TM_SQDIFF, cv2.TM_SQDIFF_NORMED]
 image, template = '', ''
@@ -48,17 +51,17 @@ first_img = tk.Button(
     text="Import base image",
     width=25,
     height=5,
-    bg="blue",
+    bg="black",
     fg="white",
     command=base_img
 )
-first_img.pack()
+first_img.pack(pady=25)
 
 second_img = tk.Button(
     text="Import second image",
     width=25,
     height=5,
-    bg="blue",
+    bg="black",
     fg="white",
     command=second_img
 )
@@ -69,10 +72,10 @@ compare = tk.Button(
     text="Compare Images",
     width=25,
     height=5,
-    bg="blue",
+    bg="black",
     fg="white",
     command=compare_img
 )
 
-compare.pack()
+compare.pack(pady=25)
 window.mainloop()
