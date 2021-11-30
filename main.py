@@ -83,4 +83,7 @@ compare = tk.Button(
 
 compare.pack(pady=25, padx=25, anchor="w")
 
+can = tk.Canvas(window, bg='black', height=300, width=450)
+can.place(x=350, y=160, anchor='nw')
+
 window.mainloop()
