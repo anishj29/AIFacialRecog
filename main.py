@@ -1,16 +1,22 @@
 import cv2
 import tkinter as tk
 from tkinter import filedialog
+from PIL import ImageTk, Image
+import time
+from tkinter.ttk import Progressbar
 
 window = tk.Tk()
 window.title('AI Facial Recognition')
-window.geometry('800x600+700+200')
-bg = tk.PhotoImage(file="assets/recogbg.png")
-label1 = tk.Label(window, image=bg)
+window.geometry('1120x720+700+200')
+
+img = Image.open("assets/recogbg.png")
+img = img.resize((1120, 720), Image.ANTIALIAS)
+img = ImageTk.PhotoImage(img)
+label1 = tk.Label(window, image=img)
 label1.place(x=0, y=0)
 
-methods = [cv2.TM_CCOEFF, cv2.TM_CCOEFF_NORMED, cv2.TM_CCORR, cv2.TM_CCORR_NORMED, cv2.TM_SQDIFF, cv2.TM_SQDIFF_NORMED]
-image, template = '', ''
+methods = [cv2.TM_CCOEFF_NORMED]
+image, template, img2 = '', '', ''
 h, w = '', ''
 
 
@@ -27,8 +33,18 @@ def second_img():
     h, w = template.shape
 
 
+def step():
+    for i in range(5):
+        window.update_idletasks()
+        pb['value'] += 20
+        time.sleep(1)
+        txt['text'] = pb['value'], '%'
+
+
 def compare_img():
-    global image, template, methods
+    global image, template, methods, img2, can
+
+    step()
     if image == '' or template == '' or h == '' or w == '':
         return
     for method in methods:
@@ -43,9 +59,17 @@ def compare_img():
 
         bottom_right = (location[0] + w, location[1] + h)
         cv2.rectangle(img2, location, bottom_right, 255, 5)
-        cv2.imshow('match', img2)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+
+    if img2 != '':
+        cv2.imshow("media", img2)
+        img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2RGB)
+        im_pil = Image.fromarray(img2)
+        im_pil = Image.open("assets/recogbg.png")
+
+        im_pil = im_pil.resize((720, 450), Image.ANTIALIAS)
+
+        im_pil = ImageTk.PhotoImage(im_pil)
+        can.configure(image=im_pil)
 
 
 first_img = tk.Button(
@@ -57,7 +81,7 @@ first_img = tk.Button(
     fg="white",
     command=base_img
 )
-first_img.pack(pady=(150, 25), padx=25, anchor="w")
+first_img.pack(pady=(200, 25), padx=25, anchor="w")
 
 second_img = tk.Button(
     text="Import second image",
@@ -82,8 +106,27 @@ compare = tk.Button(
 )
 
 compare.pack(pady=25, padx=25, anchor="w")
+can = tk.Label(window, bg="black", height=30, width=100)
+can.place(x=350, y=130, anchor='nw')
 
-can = tk.Canvas(window, bg='black', height=300, width=450)
-can.place(x=350, y=160, anchor='nw')
+
+pb = Progressbar(
+    window,
+    orient="horizontal",
+    length=100,
+    mode='determinate'
+    )
+
+pb.place(x=40, y=20)
+
+txt = tk.Label(
+    window,
+    text = '0%',
+    bg='#345',
+    fg='#fff'
+
+)
+
+txt.place(x=150, y=20)
 
 window.mainloop()
