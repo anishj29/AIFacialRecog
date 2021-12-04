@@ -62,15 +62,11 @@ def compare_img():
         cv2.rectangle(img2, location, bottom_right, 255, 5)
 
     if img2 != '':
-        cv2.imshow("media", img2)
         img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2RGB)
         im_pil = Image.fromarray(img2)
-        im_pil = Image.open("assets/recogbg.png")
-
-        im_pil = im_pil.resize((720, 450), Image.ANTIALIAS)
-
+        im_pil = im_pil.resize((650, 420), Image.ANTIALIAS)
         im_pil = ImageTk.PhotoImage(im_pil)
-        can.configure(image=im_pil)
+        can.config(can.create_image(0, 0, anchor="nw", image=im_pil))
 
 
 first_img = tk.Button(
@@ -107,7 +103,7 @@ compare = tk.Button(
 )
 
 compare.pack(pady=25, padx=25, anchor="w")
-can = tk.Label(window, bg="black", height=30, width=100)
+can = tk.Canvas(window, bd=0, highlightthickness=0, bg="black", height=420, width=650)
 can.place(x=350, y=130, anchor='nw')
 
 
