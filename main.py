@@ -37,16 +37,17 @@ def step():
     for i in range(5):
         window.update_idletasks()
         pb['value'] += 20
-        time.sleep(1)
+        time.sleep(0.08)
         txt['text'] = pb['value'], '%'
 
 
 def compare_img():
     global image, template, methods, img2, can
 
-    step()
     if image == '' or template == '' or h == '' or w == '':
         return
+    else:
+        step()
     for method in methods:
         img2 = image.copy()
         result = cv2.matchTemplate(img2, template, method)
@@ -113,20 +114,20 @@ can.place(x=350, y=130, anchor='nw')
 pb = Progressbar(
     window,
     orient="horizontal",
-    length=100,
+    length=150,
     mode='determinate'
     )
 
-pb.place(x=40, y=20)
+pb.place(x=26, y=130)
 
 txt = tk.Label(
     window,
-    text = '0%',
+    text='0%',
     bg='#345',
     fg='#fff'
 
 )
 
-txt.place(x=150, y=20)
+txt.place(x=185, y=130)
 
 window.mainloop()
