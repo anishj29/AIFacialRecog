@@ -19,6 +19,8 @@ methods = [cv2.TM_CCOEFF_NORMED]
 image, template, img2 = '', '', ''
 h, w = '', ''
 
+title = tk.Label(window, relief=tk.RAISED, text="A.I Face Recog", font=("Orbitron", 25), bg="#68255badde", fg="white")
+title.place(x=1120/2, y=20)
 
 def base_img():
     global image
